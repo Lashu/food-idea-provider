@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
+  food-idea-provider:
+    container_name: food-idea-provider
+    image: "lashu/food-idea-provider"
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo
+    depends_on:
+      - mongo
+volumes:
+  mongo:
