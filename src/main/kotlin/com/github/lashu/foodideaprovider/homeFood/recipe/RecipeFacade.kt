@@ -5,4 +5,5 @@ interface RecipeFacade {
     fun getRecipe(id: String): Recipe
     fun getRecipes(): List<Recipe>
     fun updateRecipe(id: String, updateRecipeRequest: UpdateRecipeRequest)
+    fun deleteRecipe(id: String)
 }

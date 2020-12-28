@@ -87,4 +87,17 @@ class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
             }
     }
 
+    def "should delete recipe"() {
+        given:
+            def recipeId = "recipeId"
+            mongoRecipeSpringRepository.insert(sampleRecipeDocument(recipeId))
+
+        when:
+            def response = delete(localUrl("/recipes/$recipeId"))
+
+        then:
+            response.statusCode == OK
+            mongoRecipeSpringRepository.findById(recipeId).isEmpty()
+    }
+
 }

@@ -50,4 +50,9 @@ class RecipeFacadeImpl(private val recipeRepository: RecipeRepository): RecipeFa
         }
     }
 
+    override fun deleteRecipe(id: String) {
+        getRecipe(id)
+        recipeRepository.deleteById(id)
+    }
+
 }

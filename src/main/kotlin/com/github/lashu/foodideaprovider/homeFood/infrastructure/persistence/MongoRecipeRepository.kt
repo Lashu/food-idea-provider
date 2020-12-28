@@ -26,6 +26,10 @@ class MongoRecipeRepository(private val mongoRecipeSpringRepository: MongoRecipe
         return mongoRecipeSpringRepository.findAll().map { it.toRecipe() }
     }
 
+    override fun deleteById(id: String) {
+        return mongoRecipeSpringRepository.deleteById(id)
+    }
+
     private fun Recipe.toDocument(): RecipeDocument = RecipeDocument(
         id,
         name,

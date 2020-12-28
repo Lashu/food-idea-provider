@@ -4,4 +4,5 @@ interface RecipeRepository {
     fun save(recipe: Recipe): Recipe
     fun findById(id: String): Recipe?
     fun findAll(): List<Recipe>
+    fun deleteById(id: String)
 }

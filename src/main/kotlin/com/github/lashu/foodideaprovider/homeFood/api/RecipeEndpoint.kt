@@ -9,6 +9,7 @@ import com.github.lashu.foodideaprovider.homeFood.recipe.UpdateRecipeRequest
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -42,6 +43,11 @@ class RecipeEndpoint(private val recipeFacade: RecipeFacade) {
     @PutMapping("/{id}")
     fun updateRecipe(@PathVariable id: String, @RequestBody recipeRequest: RecipeRequestDto) {
         recipeFacade.updateRecipe(id, recipeRequest.toUpdateRecipe(id))
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteRecipe(@PathVariable id: String) {
+        recipeFacade.deleteRecipe(id)
     }
 
     private fun Recipe.toResponse(): RecipeResponseDto = RecipeResponseDto(
