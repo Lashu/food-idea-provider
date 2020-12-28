@@ -5,6 +5,7 @@ import com.github.lashu.foodideaprovider.homeFood.recipe.Recipe
 import com.github.lashu.foodideaprovider.homeFood.recipe.RecipeFacade
 import com.github.lashu.foodideaprovider.homeFood.recipe.RecipeNotFoundException
 import com.github.lashu.foodideaprovider.homeFood.recipe.RecipeRepository
+import com.github.lashu.foodideaprovider.homeFood.recipe.UpdateRecipeRequest
 import java.util.UUID.randomUUID
 
 class RecipeFacadeImpl(private val recipeRepository: RecipeRepository): RecipeFacade {
@@ -29,6 +30,24 @@ class RecipeFacadeImpl(private val recipeRepository: RecipeRepository): RecipeFa
 
     override fun getRecipes(): List<Recipe> {
         return recipeRepository.findAll()
+    }
+
+    override fun updateRecipe(id: String, updateRecipeRequest: UpdateRecipeRequest) {
+        val recipe = Recipe(
+            id,
+            name = updateRecipeRequest.name,
+            ingredients = updateRecipeRequest.ingredients,
+            steps = updateRecipeRequest.steps,
+            sweet = updateRecipeRequest.sweet,
+            category = updateRecipeRequest.category,
+            performers = updateRecipeRequest.performers
+        )
+
+        val existingRecipe = getRecipe(id)
+
+        if (existingRecipe != recipe) {
+            recipeRepository.save(recipe)
+        }
     }
 
 }

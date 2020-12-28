@@ -31,4 +31,3 @@ class ErrorHandler(private val errorResponseFactory: ErrorResponseFactory) {
     }
 
 }
-

@@ -5,11 +5,14 @@ import com.github.lashu.foodideaprovider.homeFood.recipe.CreateRecipeRequest
 import com.github.lashu.foodideaprovider.homeFood.recipe.Ingredient
 import com.github.lashu.foodideaprovider.homeFood.recipe.Recipe
 import com.github.lashu.foodideaprovider.homeFood.recipe.RecipeFacade
+import com.github.lashu.foodideaprovider.homeFood.recipe.UpdateRecipeRequest
 import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -21,8 +24,8 @@ class RecipeEndpoint(private val recipeFacade: RecipeFacade) {
 
     @ResponseStatus(CREATED)
     @PostMapping(consumes = [APPLICATION_JSON_VALUE], produces = [APPLICATION_JSON_VALUE])
-    fun createRecipe(@RequestBody createRecipeRequest: CreateRecipeRequestDto): RecipeResponseDto {
-        return recipeFacade.createRecipe(createRecipeRequest.toDomain()).toResponse()
+    fun createRecipe(@RequestBody recipeRequest: RecipeRequestDto): RecipeResponseDto {
+        return recipeFacade.createRecipe(recipeRequest.toCreateRecipe()).toResponse()
     }
 
     @GetMapping("/{id}", produces = [APPLICATION_JSON_VALUE])
@@ -35,6 +38,12 @@ class RecipeEndpoint(private val recipeFacade: RecipeFacade) {
         return RecipesResponseDto(recipeFacade.getRecipes().map { it.toResponse() })
     }
 
+    @ResponseStatus(NO_CONTENT)
+    @PutMapping("/{id}")
+    fun updateRecipe(@PathVariable id: String, @RequestBody recipeRequest: RecipeRequestDto) {
+        recipeFacade.updateRecipe(id, recipeRequest.toUpdateRecipe(id))
+    }
+
     private fun Recipe.toResponse(): RecipeResponseDto = RecipeResponseDto(
         id,
         name,
@@ -45,7 +54,17 @@ class RecipeEndpoint(private val recipeFacade: RecipeFacade) {
         performers
     )
 
-    private fun CreateRecipeRequestDto.toDomain(): CreateRecipeRequest = CreateRecipeRequest(
+    private fun RecipeRequestDto.toCreateRecipe(): CreateRecipeRequest = CreateRecipeRequest(
+        name,
+        ingredients.map { Ingredient(it.name, it.amount, it.unit) },
+        steps,
+        sweet,
+        Category.valueOf(category),
+        performers
+    )
+
+    private fun RecipeRequestDto.toUpdateRecipe(id: String): UpdateRecipeRequest = UpdateRecipeRequest(
+        id,
         name,
         ingredients.map { Ingredient(it.name, it.amount, it.unit) },
         steps,

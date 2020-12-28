@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 import static org.springframework.http.HttpStatus.CREATED
 import static org.springframework.http.HttpStatus.NOT_FOUND
+import static org.springframework.http.HttpStatus.NO_CONTENT
 import static org.springframework.http.HttpStatus.OK
 
 class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
@@ -21,7 +22,7 @@ class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
 
     def "should create recipe"() {
         given:
-            def request = sampleCreateRecipeRequest()
+            def request = sampleRecipeRequest()
 
         when:
             def response = post(localUrl("/recipes"), request, RecipeResponseDto)
@@ -57,10 +58,8 @@ class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
 
     def "should get all existing recipes"() {
         given:
-            def firstRecipeId = "recipeId1"
-            def secondRecipeId = "recipeId2"
-            mongoRecipeSpringRepository.insert(sampleRecipeDocument(firstRecipeId))
-            mongoRecipeSpringRepository.insert(sampleRecipeDocument(secondRecipeId))
+            mongoRecipeSpringRepository.insert(sampleRecipeDocument("recipeId1"))
+            mongoRecipeSpringRepository.insert(sampleRecipeDocument("recipeId2"))
 
         when:
             def response = get(localUrl("/recipes"), RecipesResponseDto)
@@ -68,6 +67,24 @@ class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
         then:
             response.statusCode == OK
             response.body.recipes.size() == 2
+    }
+
+    def "should update recipe"() {
+        given:
+            def recipeId = "recipeId"
+            mongoRecipeSpringRepository.insert(sampleRecipeDocument(recipeId))
+
+            def request = sampleRecipeRequest([name : "new recipe name"])
+
+        when:
+            def response = put(localUrl("/recipes/$recipeId"), request)
+
+        then:
+            response.statusCode == NO_CONTENT
+            with(mongoRecipeSpringRepository.findById(recipeId).get()) {
+                id == recipeId
+                name == "new recipe name"
+            }
     }
 
 }

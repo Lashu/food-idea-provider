@@ -9,6 +9,16 @@ data class CreateRecipeRequest(
     val performers: List<String>?
 )
 
+data class UpdateRecipeRequest(
+    val id: String,
+    val name: String,
+    val ingredients: List<Ingredient>,
+    val steps: List<String>,
+    val sweet: Boolean,
+    val category: Category,
+    val performers: List<String>?
+)
+
 data class Recipe(
     val id: String,
     val name: String,

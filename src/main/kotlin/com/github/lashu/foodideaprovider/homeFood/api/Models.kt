@@ -1,6 +1,6 @@
 package com.github.lashu.foodideaprovider.homeFood.api
 
-data class CreateRecipeRequestDto(
+data class RecipeRequestDto(
     val name: String,
     val ingredients: List<IngredientDto>,
     val steps: List<String>,
