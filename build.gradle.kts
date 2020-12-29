@@ -24,8 +24,6 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("io.springfox:springfox-swagger2:2.9.2")
 	implementation("io.springfox:springfox-swagger-ui:2.9.2")
-	implementation("org.spockframework:spock-core")
-	implementation("org.spockframework:spock-core")
 	testImplementation("org.spockframework:spock-core:1.3-groovy-2.5")
 	testImplementation("org.spockframework:spock-spring:1.3-groovy-2.5")
 	testImplementation("org.testcontainers:mongodb:1.14.3")
