@@ -33,7 +33,7 @@ class MongoRecipeRepository(private val mongoRecipeSpringRepository: MongoRecipe
     private fun Recipe.toDocument(): RecipeDocument = RecipeDocument(
         id,
         name,
-        ingredients.map { IngredientDocument(it.name, it.amount, it.unit) },
+        ingredients?.map { IngredientDocument(it.name, it.amount, it.unit) },
         steps,
         sweet,
         category.name,
@@ -43,10 +43,10 @@ class MongoRecipeRepository(private val mongoRecipeSpringRepository: MongoRecipe
     private fun RecipeDocument.toRecipe(): Recipe = Recipe(
         id,
         name,
-        ingredients.map { Ingredient(it.name, it.amount, it.unit) },
+        ingredients?.map { Ingredient(it.name, it.amount, it.unit) },
         steps,
         sweet,
-        Category.valueOf(category),
+        Category.fromName(category),
         performers
     )
 

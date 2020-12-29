@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/recipes")
@@ -25,7 +26,7 @@ class RecipeEndpoint(private val recipeFacade: RecipeFacade) {
 
     @ResponseStatus(CREATED)
     @PostMapping(consumes = [APPLICATION_JSON_VALUE], produces = [APPLICATION_JSON_VALUE])
-    fun createRecipe(@RequestBody recipeRequest: RecipeRequestDto): RecipeResponseDto {
+    fun createRecipe(@Valid @RequestBody recipeRequest: RecipeRequestDto): RecipeResponseDto {
         return recipeFacade.createRecipe(recipeRequest.toCreateRecipe()).toResponse()
     }
 
@@ -53,7 +54,7 @@ class RecipeEndpoint(private val recipeFacade: RecipeFacade) {
     private fun Recipe.toResponse(): RecipeResponseDto = RecipeResponseDto(
         id,
         name,
-        ingredients.map { IngredientDto(it.name, it.amount, it.unit) },
+        ingredients?.map { IngredientDto(it.name, it.amount, it.unit) },
         steps,
         sweet,
         category.name,
@@ -62,20 +63,20 @@ class RecipeEndpoint(private val recipeFacade: RecipeFacade) {
 
     private fun RecipeRequestDto.toCreateRecipe(): CreateRecipeRequest = CreateRecipeRequest(
         name,
-        ingredients.map { Ingredient(it.name, it.amount, it.unit) },
+        ingredients?.map { Ingredient(it.name, it.amount, it.unit) },
         steps,
         sweet,
-        Category.valueOf(category),
+        Category.fromName(category),
         performers
     )
 
     private fun RecipeRequestDto.toUpdateRecipe(id: String): UpdateRecipeRequest = UpdateRecipeRequest(
         id,
         name,
-        ingredients.map { Ingredient(it.name, it.amount, it.unit) },
+        ingredients?.map { Ingredient(it.name, it.amount, it.unit) },
         steps,
         sweet,
-        Category.valueOf(category),
+        Category.fromName(category),
         performers
     )
 

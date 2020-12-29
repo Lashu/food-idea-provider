@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class RecipeDocument(
     @Id val id: String,
     val name: String,
-    val ingredients: List<IngredientDocument>,
-    val steps: List<String>,
+    val ingredients: List<IngredientDocument>?,
+    val steps: List<String>?,
     val sweet: Boolean,
     val category: String,
     val performers: List<String>?
