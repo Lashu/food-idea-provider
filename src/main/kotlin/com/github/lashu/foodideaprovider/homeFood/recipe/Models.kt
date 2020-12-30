@@ -8,7 +8,7 @@ data class CreateRecipeRequest(
     val steps: List<String>?,
     val sweet: Boolean,
     val category: Category,
-    val performers: List<String>?
+    val performers: Set<String>?
 )
 
 data class UpdateRecipeRequest(
@@ -18,7 +18,7 @@ data class UpdateRecipeRequest(
     val steps: List<String>?,
     val sweet: Boolean,
     val category: Category,
-    val performers: List<String>?
+    val performers: Set<String>?
 )
 
 data class Recipe(
@@ -28,7 +28,7 @@ data class Recipe(
     val steps: List<String>?,
     val sweet: Boolean,
     val category: Category,
-    val performers: List<String>?
+    val performers: Set<String>?
 )
 
 data class Ingredient(

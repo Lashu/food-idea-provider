@@ -11,7 +11,7 @@ data class RecipeDocument(
     val steps: List<String>?,
     val sweet: Boolean,
     val category: String,
-    val performers: List<String>?
+    val performers: Set<String>?
 )
 
 data class IngredientDocument(

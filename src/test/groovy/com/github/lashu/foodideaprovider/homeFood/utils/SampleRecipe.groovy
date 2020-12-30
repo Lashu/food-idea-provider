@@ -25,7 +25,7 @@ trait SampleRecipe {
                 arguments.steps as List<String>,
                 arguments.sweet as Boolean,
                 arguments.category as String,
-                arguments.performers as List<String>
+                arguments.performers as Set<String>
         )
     }
 
@@ -48,7 +48,7 @@ trait SampleRecipe {
                 arguments.steps as List<String>,
                 arguments.sweet as Boolean,
                 arguments.category as String,
-                arguments.performers as List<String>
+                arguments.performers as Set<String>
         )
     }
 
