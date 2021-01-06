@@ -8,6 +8,13 @@ import org.springframework.context.annotation.Configuration
 class RecipeConfiguration {
 
     @Bean
-    fun recipeFacade(recipeRepository: RecipeRepository): RecipeFacade = RecipeFacadeImpl(recipeRepository)
+    fun recipeFacade(recipeRepository: RecipeRepository, recipeIdGenerator: RecipeIdGenerator): RecipeFacade {
+        return RecipeFacadeImpl(recipeRepository, recipeIdGenerator)
+    }
+
+    @Bean
+    fun recipeIdGenerator(): RecipeIdGenerator {
+        return DefaultRecipeIdGenerator()
+    }
 
 }

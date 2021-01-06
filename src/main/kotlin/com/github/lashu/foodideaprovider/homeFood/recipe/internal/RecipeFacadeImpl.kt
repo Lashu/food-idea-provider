@@ -3,16 +3,19 @@ package com.github.lashu.foodideaprovider.homeFood.recipe.internal
 import com.github.lashu.foodideaprovider.homeFood.recipe.CreateRecipeRequest
 import com.github.lashu.foodideaprovider.homeFood.recipe.Recipe
 import com.github.lashu.foodideaprovider.homeFood.recipe.RecipeFacade
+import com.github.lashu.foodideaprovider.homeFood.recipe.RecipeIdGenerator
 import com.github.lashu.foodideaprovider.homeFood.recipe.RecipeNotFoundException
 import com.github.lashu.foodideaprovider.homeFood.recipe.RecipeRepository
 import com.github.lashu.foodideaprovider.homeFood.recipe.UpdateRecipeRequest
-import java.util.UUID.randomUUID
 
-class RecipeFacadeImpl(private val recipeRepository: RecipeRepository): RecipeFacade {
+class RecipeFacadeImpl(
+    private val recipeRepository: RecipeRepository,
+    private val recipeIdGenerator: RecipeIdGenerator
+): RecipeFacade {
 
     override fun createRecipe(createRecipeRequest: CreateRecipeRequest): Recipe {
         val recipe = Recipe(
-            id = randomUUID().toString(),
+            id = recipeIdGenerator.generate(),
             name = createRecipeRequest.name,
             ingredients = createRecipeRequest.ingredients,
             steps = createRecipeRequest.steps,
@@ -32,9 +35,9 @@ class RecipeFacadeImpl(private val recipeRepository: RecipeRepository): RecipeFa
         return recipeRepository.findAll()
     }
 
-    override fun updateRecipe(id: String, updateRecipeRequest: UpdateRecipeRequest) {
+    override fun updateRecipe(updateRecipeRequest: UpdateRecipeRequest) {
         val recipe = Recipe(
-            id,
+            id = updateRecipeRequest.id,
             name = updateRecipeRequest.name,
             ingredients = updateRecipeRequest.ingredients,
             steps = updateRecipeRequest.steps,
@@ -43,7 +46,7 @@ class RecipeFacadeImpl(private val recipeRepository: RecipeRepository): RecipeFa
             performers = updateRecipeRequest.performers
         )
 
-        val existingRecipe = getRecipe(id)
+        val existingRecipe = getRecipe(updateRecipeRequest.id)
 
         if (existingRecipe != recipe) {
             recipeRepository.save(recipe)

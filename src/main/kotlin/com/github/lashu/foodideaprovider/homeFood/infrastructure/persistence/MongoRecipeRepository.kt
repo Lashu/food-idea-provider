@@ -53,3 +53,29 @@ class MongoRecipeRepository(private val mongoRecipeSpringRepository: MongoRecipe
     private fun <T> Optional<T>.orNull(): T? = orElse(null)
 
 }
+
+class InMemoryRecipeRepository : RecipeRepository {
+    private val storage: MutableMap<String, Recipe> = mutableMapOf()
+
+    override fun save(recipe: Recipe): Recipe {
+        if (storage.containsKey(recipe.id)) {
+            storage.replace(recipe.id, recipe)
+        } else {
+            storage[recipe.id] = recipe
+        }
+        return recipe
+    }
+
+    override fun findById(id: String): Recipe? {
+        return storage[id]
+    }
+
+    override fun findAll(): List<Recipe> {
+        return storage.values.toList()
+    }
+
+    override fun deleteById(id: String) {
+        storage.remove(id)
+    }
+
+}

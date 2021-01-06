@@ -1,17 +1,17 @@
-package com.github.lashu.foodideaprovider.homeFood.api
+package com.github.lashu.foodideaprovider.homeFood.integration
 
 import com.github.lashu.foodideaprovider.homeFood.IntegrationSpec
-import com.github.lashu.foodideaprovider.homeFood.api.internal.ErrorHolder
+import com.github.lashu.foodideaprovider.homeFood.api.RecipeResponseDto
+import com.github.lashu.foodideaprovider.homeFood.api.RecipesResponseDto
 import com.github.lashu.foodideaprovider.homeFood.infrastructure.persistence.MongoRecipeSpringRepository
-import com.github.lashu.foodideaprovider.homeFood.utils.SampleRecipe
+import com.github.lashu.foodideaprovider.homeFood.base.SampleRecipe
 import org.springframework.beans.factory.annotation.Autowired
 
 import static org.springframework.http.HttpStatus.CREATED
-import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.NO_CONTENT
 import static org.springframework.http.HttpStatus.OK
 
-class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
+class RecipeAcceptanceSpec extends IntegrationSpec implements SampleRecipe {
 
     @Autowired
     MongoRecipeSpringRepository mongoRecipeSpringRepository
@@ -22,25 +22,13 @@ class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
 
     def "should create recipe"() {
         given:
-            def request = sampleRecipeRequest()
+            def requestBody = toJson(sampleRecipeRequest())
 
         when:
-            def response = post(localUrl("/recipes"), request, RecipeResponseDto)
+            def response = post(localUrl("/api/recipes"), requestBody, RecipeResponseDto)
 
         then:
             response.statusCode == CREATED
-    }
-
-    def "should return NOT_FOUND when getting non existing recipe"() {
-        given:
-            def nonExistingRecipeId = "recipeId"
-
-        when:
-            def response = get(localUrl("/recipes/$nonExistingRecipeId"), ErrorHolder)
-
-        then:
-            response.statusCode == NOT_FOUND
-            response.body.error.message == "Recipe with id: $nonExistingRecipeId not found"
     }
 
     def "should get existing recipe"() {
@@ -49,7 +37,7 @@ class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
             mongoRecipeSpringRepository.insert(sampleRecipeDocument(recipeId))
 
         when:
-            def response = get(localUrl("/recipes/$recipeId"), RecipeResponseDto)
+            def response = get(localUrl("/api/recipes/$recipeId"), RecipeResponseDto)
 
         then:
             response.statusCode == OK
@@ -62,7 +50,7 @@ class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
             mongoRecipeSpringRepository.insert(sampleRecipeDocument("recipeId2"))
 
         when:
-            def response = get(localUrl("/recipes"), RecipesResponseDto)
+            def response = get(localUrl("/api/recipes"), RecipesResponseDto)
 
         then:
             response.statusCode == OK
@@ -74,10 +62,10 @@ class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
             def recipeId = "recipeId"
             mongoRecipeSpringRepository.insert(sampleRecipeDocument(recipeId))
 
-            def request = sampleRecipeRequest([name : "new recipe name"])
+            def requestBody = toJson(sampleRecipeRequest([name : "new recipe name"]))
 
         when:
-            def response = put(localUrl("/recipes/$recipeId"), request)
+            def response = put(localUrl("/api/recipes/$recipeId"), requestBody)
 
         then:
             response.statusCode == NO_CONTENT
@@ -93,7 +81,7 @@ class RecipeEndpointSpec extends IntegrationSpec implements SampleRecipe {
             mongoRecipeSpringRepository.insert(sampleRecipeDocument(recipeId))
 
         when:
-            def response = delete(localUrl("/recipes/$recipeId"))
+            def response = delete(localUrl("/api/recipes/$recipeId"))
 
         then:
             response.statusCode == OK

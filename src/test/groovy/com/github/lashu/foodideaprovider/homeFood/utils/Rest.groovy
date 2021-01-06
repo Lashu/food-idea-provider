@@ -16,16 +16,16 @@ trait Rest {
     @Autowired
     TestRestTemplate restTemplate
 
-    def <T> ResponseEntity<T> post(String url, Object request, Class<T> responseType) {
-        restTemplate.exchange(url, POST, new HttpEntity(request, new HttpHeaders(["Content-Type": "application/json"])), responseType)
+    def <T> ResponseEntity<T> post(String url, String requestBody, Class<T> responseType) {
+        restTemplate.exchange(url, POST, new HttpEntity(requestBody, new HttpHeaders(["Content-Type": "application/json"])), responseType)
     }
 
     def <T> ResponseEntity<T> get(String url, Class<T> responseType) {
         restTemplate.exchange(url, GET, new HttpEntity(new HttpHeaders(["Accept": "application/json"])), responseType)
     }
 
-    ResponseEntity<Void> put(String url, Object request) {
-        restTemplate.exchange(url, PUT, new HttpEntity(request, new HttpHeaders(["Content-Type": "application/json"])), Void)
+    ResponseEntity<Void> put(String url, String requestBody) {
+        restTemplate.exchange(url, PUT, new HttpEntity(requestBody, new HttpHeaders(["Content-Type": "application/json"])), Void)
     }
 
     ResponseEntity<Void> delete(String url) {

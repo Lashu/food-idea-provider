@@ -1,6 +1,6 @@
 package com.github.lashu.foodideaprovider.homeFood.api
 
-import com.github.lashu.foodideaprovider.homeFood.utils.SampleRecipe
+import com.github.lashu.foodideaprovider.homeFood.base.SampleRecipe
 import spock.lang.Specification
 
 import javax.validation.Validation

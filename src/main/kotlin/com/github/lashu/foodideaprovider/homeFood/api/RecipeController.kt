@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/recipes")
-class RecipeEndpoint(private val recipeFacade: RecipeFacade) {
+@RequestMapping("/api/recipes")
+class RecipeController(private val recipeFacade: RecipeFacade) {
 
     @ResponseStatus(CREATED)
     @PostMapping(consumes = [APPLICATION_JSON_VALUE], produces = [APPLICATION_JSON_VALUE])
@@ -43,7 +43,7 @@ class RecipeEndpoint(private val recipeFacade: RecipeFacade) {
     @ResponseStatus(NO_CONTENT)
     @PutMapping("/{id}")
     fun updateRecipe(@PathVariable id: String, @RequestBody recipeRequest: RecipeRequestDto) {
-        recipeFacade.updateRecipe(id, recipeRequest.toUpdateRecipe(id))
+        recipeFacade.updateRecipe(recipeRequest.toUpdateRecipe(id))
     }
 
     @DeleteMapping("/{id}")
