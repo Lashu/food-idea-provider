@@ -10,6 +10,7 @@ import com.github.lashu.foodideaprovider.homeFood.recipe.Ingredient
 import com.github.lashu.foodideaprovider.homeFood.recipe.UpdateRecipeRequest
 
 import static com.github.lashu.foodideaprovider.homeFood.recipe.Category.SNACK
+import static com.github.lashu.foodideaprovider.homeFood.utils.PropertiesVerifier.verifyCustomProperties
 
 trait SampleRecipe {
 
@@ -23,6 +24,7 @@ trait SampleRecipe {
                 category: SNACK,
                 performers: ["Gentle person"]
         ]
+        verifyCustomProperties(parameters, defaultParameters.keySet())
 
         def arguments = defaultParameters + parameters
 
@@ -46,6 +48,7 @@ trait SampleRecipe {
                 category: SNACK,
                 performers: ["Gentle person"]
         ]
+        verifyCustomProperties(parameters, defaultParameters.keySet())
 
         def arguments = defaultParameters + parameters
 
@@ -68,6 +71,7 @@ trait SampleRecipe {
                 category: "SNACK",
                 performers: ["Gentle person"]
         ]
+        verifyCustomProperties(parameters, defaultParameters.keySet())
 
         def arguments = defaultParameters + parameters
 
@@ -90,6 +94,7 @@ trait SampleRecipe {
                 category: "SNACK",
                 performers: ["Gentle person"]
         ]
+        verifyCustomProperties(parameters, defaultParameters.keySet())
 
         def arguments = defaultParameters + parameters
 

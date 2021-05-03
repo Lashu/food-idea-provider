@@ -1,8 +1,7 @@
-package com.github.lashu.foodideaprovider.homeFood
+package com.github.lashu.foodideaprovider.homeFood.integration
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.lashu.foodideaprovider.AppRunner
-import com.github.lashu.foodideaprovider.homeFood.utils.Rest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort

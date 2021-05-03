@@ -1,4 +1,4 @@
-package com.github.lashu.foodideaprovider.homeFood.utils
+package com.github.lashu.foodideaprovider.homeFood.integration
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.web.client.TestRestTemplate

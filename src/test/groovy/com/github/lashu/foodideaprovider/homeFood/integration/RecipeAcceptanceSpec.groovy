@@ -1,6 +1,6 @@
 package com.github.lashu.foodideaprovider.homeFood.integration
 
-import com.github.lashu.foodideaprovider.homeFood.IntegrationSpec
+
 import com.github.lashu.foodideaprovider.homeFood.api.RecipeResponseDto
 import com.github.lashu.foodideaprovider.homeFood.api.RecipesResponseDto
 import com.github.lashu.foodideaprovider.homeFood.infrastructure.persistence.MongoRecipeSpringRepository
